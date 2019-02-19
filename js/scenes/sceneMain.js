@@ -31,6 +31,8 @@ class SceneMain extends Phaser.Scene {
         this.background.setInteractive();
         this.background.on('pointerdown', this.backgroundClicked, this);
 
+        this.cameras.main.setBounds(0, 0, this.background.displayWidth, this.background.displayHeight);
+        this.cameras.main.startFollow(this.ship, true);
     }
 
     backgroundClicked() {
