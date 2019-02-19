@@ -23,6 +23,10 @@ class SceneMain extends Phaser.Scene {
         this.background = this.add.image(0,0,'background');
         this.background.setOrigin(0,0);
         this.ship = this.physics.add.sprite(this.centerX, this.centerY, 'ship');
+        Align.scaleToGameW(this.ship, .125);
+
+        this.background.scaleX = this.ship.scaleX;
+        this.background.scaleY = this.ship.scaleY;
 
         this.background.setInteractive();
         this.background.on('pointerdown', this.backgroundClicked, this);
@@ -30,14 +34,26 @@ class SceneMain extends Phaser.Scene {
     }
 
     backgroundClicked() {
-        let tx = this.background.input.localX;
-        let ty = this.background.input.localY;
+        let tx = this.background.input.localX * this.background.scaleX;
+        let ty = this.background.input.localY * this.background.scaleY;
+        this.tx = tx;
+        this.ty = ty;
 
-        this.physics.moveTo(this.ship, tx, ty, 60);
+        let angle = this.physics.moveTo(this.ship, tx, ty, 60);
+        angle = this.toDegrees(angle);
+        this.ship.angle = angle;
+    }
+
+    toDegrees(angle) {
+        return angle * (180 / Math.PI);
     }
 
     update() {
         //constant running loop
-
-    }
+        let distX = Math.abs(this.ship.x - this.tx);
+        let distY = Math.abs(this.ship.y - this.ty);
+        if (distX < 10 && distY < 10) {
+            this.ship.body.setVelocity(0, 0);
+        }
+    }   
 }
