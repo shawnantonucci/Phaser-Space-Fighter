@@ -29,6 +29,10 @@ class SceneLoad extends Phaser.Scene {
     this.load.image("sfxOn", "images/ui/icons/sfx_on.png");
     this.load.image("musicOn", "images/ui/icons/music_on.png");
     this.load.image("musicOff", "images/ui/icons/music_off.png");
+
+    this.load.image("ship", "images/player.png");
+    this.load.image("background", "images/background.jpg");
+
   }
 
   onProgress(value) {
