@@ -17,6 +17,10 @@ class SceneMain extends Phaser.Scene {
 
         let sb = new SoundButtons({scene :this});
 
+        this.centerX = game.config.width / 2;
+        this.centerY = game.config.height / 2;
+
+        this.ship = this.physics.add.sprite(this.centerX, this.centerY, 'ship');
     }
 
     update() {
