@@ -44,6 +44,8 @@ class SceneMain extends Phaser.Scene {
     );
     this.cameras.main.startFollow(this.ship, true);
 
+    this.bulletGroup = this.physics.add.group();
+
     this.rockGroup = this.physics.add.group({
       key: "rocks",
       frame: [0, 1, 2],
@@ -76,6 +78,13 @@ class SceneMain extends Phaser.Scene {
     );
 
     this.physics.add.collider(this.rockGroup);
+    this.physics.add.collider(this.bulletGroup, this.rockGroup, this.destroyRock, null, this);
+  }
+
+  destroyRock(bullet, rock)
+  {
+    bullet.destroy();
+    rock.destroy();
   }
 
   getTimer() {
@@ -109,6 +118,7 @@ class SceneMain extends Phaser.Scene {
   makeBullet() {
     let dirObj = this.getDirFromAngle(this.ship.angle);
     let bullet = this.physics.add.sprite(this.ship.x + dirObj.tx * 30, this.ship.y + dirObj.ty * 30, "bullet");
+    this.bulletGroup.add(bullet);
     bullet.angle = this.ship.angle;
     bullet.body.setVelocity(dirObj.tx * 200, dirObj.ty * 200);
   }
