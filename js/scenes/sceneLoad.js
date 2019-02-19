@@ -33,6 +33,8 @@ class SceneLoad extends Phaser.Scene {
     this.load.image("ship", "images/player.png");
     this.load.image("background", "images/background.jpg");
 
+    this.load.spritesheet('rocks', 'images/rocks.png', { frameWidth: 125, frameHeight: 100 });
+
   }
 
   onProgress(value) {
