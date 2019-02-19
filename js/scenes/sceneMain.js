@@ -25,6 +25,7 @@ class SceneMain extends Phaser.Scene {
 
     this.background.scaleX = this.ship.scaleX;
     this.background.scaleY = this.ship.scaleY;
+    this.physics.world.setBounds(0, 0, this.background.displayWidth, this.background.displayHeight);
 
     this.background.setInteractive();
     this.background.on("pointerdown", this.backgroundClicked, this);
@@ -46,6 +47,7 @@ class SceneMain extends Phaser.Scene {
       angularVelocity: 1,
       collideWorldBounds: true
     });
+
     this.rockGroup.children.iterate(
       function(child) {
         let xx = Math.floor(Math.random() * this.background.displayWidth);
@@ -54,8 +56,21 @@ class SceneMain extends Phaser.Scene {
         child.y = yy;
 
         Align.scaleToGameW(child, .1);
-      }.bind(this)
-    );
+
+        let vx = Math.floor(Math.random() * 2) - 1;
+        let vy = Math.floor(Math.random() * 2) - 1;
+        if (vx == 0 && vy == 0)
+        {
+            vx = 1;
+            vy = 1;
+        }
+
+        let speed = Math.floor(Math.random() * 200) + 10;
+        child.body.setVelocity(vx * speed, vy * speed);
+
+      }.bind(this));
+
+      this.physics.add.collider(this.rockGroup);
   }
 
   backgroundClicked() {
