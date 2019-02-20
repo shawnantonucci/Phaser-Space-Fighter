@@ -97,6 +97,23 @@ class SceneMain extends Phaser.Scene {
     this.eship = this.physics.add.sprite(this.centerX, 0, "eship");
     Align.scaleToGameW(this.eship, 0.25);
 
+    this.makeInfo();
+  }
+
+  makeInfo()
+  {
+    this.text1 = this.add.text(0,0,"Shields\n100", {align: "center", backgroundColor: '#000000'});
+    this.text2 = this.add.text(0,0,"Enemy Shields\n100", {align: "center", backgroundColor: '#000000'});
+
+    this.text1.setOrigin(0.5,0.5);
+    this.text2.setOrigin(0.5,0.5);
+    
+    this.uiGrid = new AlignGrid({scene:this,rows:11,cols:11});
+    this.uiGrid.showNumber();
+    //
+    //
+    this.uiGrid.placeAtIndex(2, this.text1);
+    this.uiGrid.placeAtIndex(9, this.text2);
   }
 
   destroyRock(bullet, rock)
@@ -147,6 +164,20 @@ class SceneMain extends Phaser.Scene {
     bullet.body.setVelocity(dirObj.tx * 200, dirObj.ty * 200);
   }
 
+  fireEBullet()
+  {
+    let elapsed = Math.abs(this.lastEBullet - this.getTimer());
+    if (elapsed < 500)
+    {
+      return;
+    }
+    this.lastEBullet = this.getTimer();
+
+    let ebullet = this.physics.add.sprite(this.eship.x, this.eship.y, "ebullet");
+    ebullet.body.angularVelocity = 10;
+    this.physics.moveTo(ebullet, this.ship.x, this.ship.y, 100);
+  }
+
   getDirFromAngle(angle) {
     var rads = (angle * Math.PI) / 180;
     var tx = Math.cos(rads);
@@ -170,10 +201,7 @@ class SceneMain extends Phaser.Scene {
     let distY2 = Math.abs(this.ship.y - this.eship.y);
     if (distX2 < game.config.width / 5 && distY2 < game.config.height / 5) {
       this.eship.alpha = .5;
-    }
-    else
-    {
-      this.eship.alpha = 1;
+      this.fireEBullet();
     }
   }
 }
