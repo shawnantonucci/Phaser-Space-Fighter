@@ -94,6 +94,9 @@ class SceneMain extends Phaser.Scene {
         repeat: false
     });
 
+    this.eship = this.physics.add.sprite(this.centerX, 0, "eship");
+    Align.scaleToGameW(this.eship, 0.25);
+
   }
 
   destroyRock(bullet, rock)
@@ -124,12 +127,16 @@ class SceneMain extends Phaser.Scene {
       this.tx = tx;
       this.ty = ty;
 
-      let angle = this.physics.moveTo(this.ship, tx, ty, 60);
+      let angle = this.physics.moveTo(this.ship, tx, ty, 100);
       angle = this.toDegrees(angle);
       this.ship.angle = angle;
     } else {
       this.makeBullet();
     }
+
+    let angle2 = this.physics.moveTo(this.eship, this.ship.x, this.ship.y, 60);
+    angle2 = this.toDegrees(angle2);
+    this.eship.angle = angle2;
   }
 
   makeBullet() {
@@ -157,6 +164,16 @@ class SceneMain extends Phaser.Scene {
     let distY = Math.abs(this.ship.y - this.ty);
     if (distX < 10 && distY < 10) {
       this.ship.body.setVelocity(0, 0);
+    }
+
+    let distX2 = Math.abs(this.ship.x - this.eship.x);
+    let distY2 = Math.abs(this.ship.y - this.eship.y);
+    if (distX2 < game.config.width / 5 && distY2 < game.config.height / 5) {
+      this.eship.alpha = .5;
+    }
+    else
+    {
+      this.eship.alpha = 1;
     }
   }
 }
