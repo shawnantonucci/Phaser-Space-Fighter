@@ -323,7 +323,6 @@ class SceneMain extends Phaser.Scene {
       let distX2 = Math.abs(this.ship.x - this.eship.x);
       let distY2 = Math.abs(this.ship.y - this.eship.y);
       if (distX2 < game.config.width / 5 && distY2 < game.config.height / 5) {
-        this.eship.alpha = .5;
         this.fireEBullet();
       }
     }
