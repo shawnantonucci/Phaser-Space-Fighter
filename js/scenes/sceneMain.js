@@ -186,6 +186,8 @@ class SceneMain extends Phaser.Scene {
   {
     let explosion = this.add.sprite(rock.x, rock.y, 'exp');
     explosion.play('boom');
+    emitter.emit(G.PLAY_SOUND, "explode");
+
     rock.destroy();
     this.makeRocks();
     this.downPlayer();
@@ -195,6 +197,8 @@ class SceneMain extends Phaser.Scene {
   {
     let explosion = this.add.sprite(rock.x, rock.y, 'exp');
     explosion.play('boom');
+    emitter.emit(G.PLAY_SOUND, "explode");
+
     rock.destroy();
     this.makeRocks();
     this.downEnemy();
@@ -204,6 +208,8 @@ class SceneMain extends Phaser.Scene {
   {
     let explosion = this.add.sprite(this.ship.x, this.ship.y, 'exp');
     explosion.play('boom');
+    emitter.emit(G.PLAY_SOUND, "explode");
+
     bullet.destroy();
     this.downPlayer();
   }
@@ -212,6 +218,8 @@ class SceneMain extends Phaser.Scene {
   {
     let explosion = this.add.sprite(bullet.x, bullet.y, 'exp');
     explosion.play('boom');
+    emitter.emit(G.PLAY_SOUND, "explode");
+
     bullet.destroy();
 
     let angle2 = this.physics.moveTo(this.eship, this.ship.x, this.ship.y, 100);
@@ -226,6 +234,8 @@ class SceneMain extends Phaser.Scene {
     bullet.destroy();
     let explosion = this.add.sprite(rock.x, rock.y, 'exp');
     explosion.play('boom');
+    emitter.emit(G.PLAY_SOUND, "explode");
+
     rock.destroy();
     this.makeRocks();
   }
@@ -275,6 +285,7 @@ class SceneMain extends Phaser.Scene {
     this.bulletGroup.add(bullet);
     bullet.angle = this.ship.angle;
     bullet.body.setVelocity(dirObj.tx * 200, dirObj.ty * 200);
+    emitter.emit(G.PLAY_SOUND, "laser");
   }
 
   fireEBullet()
@@ -290,6 +301,7 @@ class SceneMain extends Phaser.Scene {
     this.ebulletGroup.add(ebullet);
     ebullet.body.angularVelocity = 10;
     this.physics.moveTo(ebullet, this.ship.x, this.ship.y, 100);
+    emitter.emit(G.PLAY_SOUND, "enemyShoot");
   }
 
   getDirFromAngle(angle) {
