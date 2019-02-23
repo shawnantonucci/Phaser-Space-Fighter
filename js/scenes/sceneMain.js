@@ -14,8 +14,9 @@ class SceneMain extends Phaser.Scene {
     let mediaManager = new MediaManager({ scene: this });
     mediaManager.setBackgroundMusic("backgroundMusic");
 
-    this.shields = 5;
-    this.eshields = 5;
+    this.shields = 50;
+    this.eshields = 50;
+
     model.playerWon = true;
 
     this.centerX = game.config.width / 2;
@@ -72,7 +73,7 @@ class SceneMain extends Phaser.Scene {
       this.rockGroup = this.physics.add.group({
         key: "rocks",
         frame: [0, 1, 2],
-        frameQuantity: 4,
+        frameQuantity: 1,
         bounceX: 1,
         bounceY: 1,
         angularVelocity: 1,
@@ -97,27 +98,31 @@ class SceneMain extends Phaser.Scene {
   
           let speed = Math.floor(Math.random() * 200) + 10;
           child.body.setVelocity(vx * speed, vy * speed);
-        }.bind(this)
-        );
-        this.setColliders();
+        }.bind(this));
+        this.setRockColliders();
     }
   }
 
   setColliders()
   {
-    this.physics.add.collider(this.rockGroup);
-    this.physics.add.collider(this.bulletGroup, this.rockGroup, this.destroyRock, null, this);
-    this.physics.add.collider(this.ebulletGroup, this.rockGroup, this.destroyRock, null, this);
     this.physics.add.collider(this.bulletGroup, this.eship, this.damageEnemy, null, this);
     this.physics.add.collider(this.ebulletGroup, this.ship, this.damagePlayer, null, this);
+  }
+  
+  setRockColliders()
+  {
+    
+    this.physics.add.collider(this.rockGroup);
     this.physics.add.collider(this.rockGroup, this.ship, this.rockHitPlayer, null, this);
     this.physics.add.collider(this.rockGroup, this.eship, this.rockHitEnemy, null, this);
+    this.physics.add.collider(this.bulletGroup, this.rockGroup, this.destroyRock, null, this);
+    this.physics.add.collider(this.ebulletGroup, this.rockGroup, this.destroyRock, null, this);
   }
 
   makeInfo()
   {
-    this.text1 = this.add.text(0,0,"Shields\n100", {fontSize:game.config.width/30, align: "center", backgroundColor: '#000000'});
-    this.text2 = this.add.text(0,0,"Enemy Shields\n100", {fontSize:game.config.width/30, align: "center", backgroundColor: '#000000'});
+    this.text1 = this.add.text(0,0,"Shields\n50", {fontSize:game.config.width/30, align: "center", backgroundColor: '#000000'});
+    this.text2 = this.add.text(0,0,"Enemy Shields\n50", {fontSize:game.config.width/30, align: "center", backgroundColor: '#000000'});
 
     this.text1.setOrigin(0.5,0.5);
     this.text2.setOrigin(0.5,0.5);
