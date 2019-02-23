@@ -17,6 +17,9 @@ class SoundButtons extends Phaser.GameObjects.Container
 		 this.sfxButton.x=game.config.width-this.sfxButton.width/2;
 		 this.sfxButton.y=this.musicButton.y;
 
+		 this.sfxButton.setScrollFactor(0);
+		 this.musicButton.setScrollFactor(0);
+
 		 this.scene.add.existing(this);
 	}
 }

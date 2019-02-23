@@ -13,8 +13,6 @@ class SceneMain extends Phaser.Scene {
 
     let mediaManager = new MediaManager({ scene: this });
 
-    let sb = new SoundButtons({ scene: this });
-
     this.shields = 5;
     this.eshields = 5;
     model.playerWon = true;
@@ -76,6 +74,7 @@ class SceneMain extends Phaser.Scene {
 
     this.makeInfo();
     this.setColliders();
+    let sb = new SoundButtons({ scene: this });
   }
 
   makeRocks()
@@ -141,7 +140,7 @@ class SceneMain extends Phaser.Scene {
     //
     //
     this.uiGrid.placeAtIndex(2, this.text1);
-    this.uiGrid.placeAtIndex(9, this.text2);
+    this.uiGrid.placeAtIndex(8, this.text2);
     //
     //
     this.icon1 = this.add.image(0,0,"ship");
@@ -150,7 +149,7 @@ class SceneMain extends Phaser.Scene {
     Align.scaleToGameW(this.icon2, .05);
 
     this.uiGrid.placeAtIndex(1, this.icon1);
-    this.uiGrid.placeAtIndex(7, this.icon2);
+    this.uiGrid.placeAtIndex(6, this.icon2);
 
     this.icon1.angle = 270;
     this.icon2.angle = 270;
