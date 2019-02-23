@@ -109,6 +109,8 @@ class SceneMain extends Phaser.Scene {
     this.physics.add.collider(this.ebulletGroup, this.rockGroup, this.destroyRock, null, this);
     this.physics.add.collider(this.bulletGroup, this.eship, this.damageEnemy, null, this);
     this.physics.add.collider(this.ebulletGroup, this.ship, this.damagePlayer, null, this);
+    this.physics.add.collider(this.rockGroup, this.ship, this.rockHitPlayer, null, this);
+    this.physics.add.collider(this.rockGroup, this.eship, this.rockHitEnemy, null, this);
   }
 
   makeInfo()
@@ -144,6 +146,20 @@ class SceneMain extends Phaser.Scene {
     this.icon2.setScrollFactor(0);
   }
 
+  rockHitPlayer(ship, rock)
+  {
+    let explosion = this.add.sprite(rock.x, rock.y, 'exp');
+    explosion.play('boom');
+    rock.destroy();
+  }
+
+  rockHitEnemy(ship, rock)
+  {
+    let explosion = this.add.sprite(rock.x, rock.y, 'exp');
+    explosion.play('boom');
+    rock.destroy();
+  }
+
   damagePlayer(ship, bullet)
   {
     let explosion = this.add.sprite(this.ship.x, this.ship.y, 'exp');
@@ -156,6 +172,10 @@ class SceneMain extends Phaser.Scene {
     let explosion = this.add.sprite(bullet.x, bullet.y, 'exp');
     explosion.play('boom');
     bullet.destroy();
+
+    let angle2 = this.physics.moveTo(this.eship, this.ship.x, this.ship.y, 100);
+    angle2 = this.toDegrees(angle2);
+    this.eship.angle = angle2;
   }
 
   destroyRock(bullet, rock)
