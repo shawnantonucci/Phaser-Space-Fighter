@@ -21,9 +21,13 @@ class SceneLoad extends Phaser.Scene {
     this.load.image("button1", "images/ui/buttons/2/1.png");
     this.load.image("button2", "images/ui/buttons/2/5.png");
 
-    this.load.audio('explode', ["audio/explode.wav", "audio/explode.ogg"]);
-    this.load.audio('enemyShoot', ["audio/enemyShoot.wav", "audio/enemyShoot.ogg"]);
-    this.load.audio('laser', ["audio/laser.wav", "audio/laser.ogg"]);
+    this.load.audio("explode", ["audio/explode.wav", "audio/explode.ogg"]);
+    this.load.audio("enemyShoot", [
+      "audio/enemyShoot.wav",
+      "audio/enemyShoot.ogg"
+    ]);
+    this.load.audio("laser", ["audio/laser.wav", "audio/laser.ogg"]);
+    this.load.audio("backgroundMusic", ["audio/background.mp3", "audio/background.ogg"]);
     // this.load.audio('backgroundMusic', ["audio/random-race.mp3", "audio/random-race.ogg"]);
 
     this.load.image("toggleBack", "images/ui/toggles/1.png");
@@ -35,12 +39,17 @@ class SceneLoad extends Phaser.Scene {
     this.load.image("ship", "images/player.png");
     this.load.image("background", "images/background.jpg");
 
-    this.load.spritesheet('rocks', 'images/rocks.png', { frameWidth: 125, frameHeight: 100 });
-    this.load.spritesheet('exp', 'images/exp.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet("rocks", "images/rocks.png", {
+      frameWidth: 125,
+      frameHeight: 100
+    });
+    this.load.spritesheet("exp", "images/exp.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
     this.load.image("bullet", "images/bullet.png");
     this.load.image("ebullet", "images/ebullet.png");
     this.load.image("eship", "images/eship.png");
-
   }
 
   onProgress(value) {
@@ -51,6 +60,16 @@ class SceneLoad extends Phaser.Scene {
   }
 
   create() {
+    let frameNames = this.anims.generateFrameNumbers("exp");
+    let f2 = frameNames.slice();
+    f2.reverse();
+    let f3 = f2.concat(frameNames);
+    this.anims.create({
+      key: "boom",
+      frames: f3,
+      frameRate: 48,
+      repeat: false
+    });
     this.scene.start("SceneTitle");
   }
 }

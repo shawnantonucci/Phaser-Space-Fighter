@@ -12,6 +12,7 @@ class SceneMain extends Phaser.Scene {
     controller = new Controller();
 
     let mediaManager = new MediaManager({ scene: this });
+    mediaManager.setBackgroundMusic("backgroundMusic");
 
     this.shields = 5;
     this.eshields = 5;
@@ -51,23 +52,9 @@ class SceneMain extends Phaser.Scene {
     this.ebulletGroup = this.physics.add.group();
     this.rockGroup = this.physics.add.group();
     this.makeRocks();
-
-
-
-    let frameNames = this.anims.generateFrameNumbers('exp');
-
-    let f2 = frameNames.slice();
-    f2.reverse();
-
-    let f3 = f2.concat(frameNames);
-
-    this.anims.create({
-        key: 'boom',
-        frames: f3,
-        frameRate: 48,
-        repeat: false
-    });
-
+    //
+    //
+    //
     this.eship = this.physics.add.sprite(this.centerX, 0, "eship");
     this.eship.body.collideWorldBounds = true;
     Align.scaleToGameW(this.eship, 0.25);
