@@ -15,6 +15,9 @@ class SceneMain extends Phaser.Scene {
 
     let sb = new SoundButtons({ scene: this });
 
+    this.shields = 100;
+    this.eshields = 100;
+
     this.centerX = game.config.width / 2;
     this.centerY = game.config.height / 2;
 
@@ -146,11 +149,24 @@ class SceneMain extends Phaser.Scene {
     this.icon2.setScrollFactor(0);
   }
 
+  downPlayer()
+  {
+    this.shields--;
+    this.text1.setText("Shields\n" + this.shields);
+  }
+
+  downEnemy()
+  {
+    this.eshields--;
+    this.text2.setText("Enemy Shields\n" + this.eshields);
+  }
+
   rockHitPlayer(ship, rock)
   {
     let explosion = this.add.sprite(rock.x, rock.y, 'exp');
     explosion.play('boom');
     rock.destroy();
+    this.downPlayer();
   }
 
   rockHitEnemy(ship, rock)
@@ -158,6 +174,7 @@ class SceneMain extends Phaser.Scene {
     let explosion = this.add.sprite(rock.x, rock.y, 'exp');
     explosion.play('boom');
     rock.destroy();
+    this.downEnemy();
   }
 
   damagePlayer(ship, bullet)
@@ -165,6 +182,7 @@ class SceneMain extends Phaser.Scene {
     let explosion = this.add.sprite(this.ship.x, this.ship.y, 'exp');
     explosion.play('boom');
     bullet.destroy();
+    this.downPlayer();
   }
 
   damageEnemy(ship, bullet)
@@ -176,6 +194,8 @@ class SceneMain extends Phaser.Scene {
     let angle2 = this.physics.moveTo(this.eship, this.ship.x, this.ship.y, 100);
     angle2 = this.toDegrees(angle2);
     this.eship.angle = angle2;
+
+    this.downEnemy();
   }
 
   destroyRock(bullet, rock)
