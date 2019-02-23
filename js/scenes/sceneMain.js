@@ -21,6 +21,7 @@ class SceneMain extends Phaser.Scene {
     this.background = this.add.image(0, 0, "background");
     this.background.setOrigin(0, 0);
     this.ship = this.physics.add.sprite(this.centerX, this.centerY, "ship");
+    this.ship.body.collideWorldBounds = true;
     Align.scaleToGameW(this.ship, 0.125);
 
     this.background.scaleX = this.ship.scaleX;
@@ -45,6 +46,7 @@ class SceneMain extends Phaser.Scene {
     this.cameras.main.startFollow(this.ship, true);
 
     this.bulletGroup = this.physics.add.group();
+    this.ebulletGroup = this.physics.add.group();
 
     this.rockGroup = this.physics.add.group({
       key: "rocks",
@@ -77,8 +79,6 @@ class SceneMain extends Phaser.Scene {
       }.bind(this)
     );
 
-    this.physics.add.collider(this.rockGroup);
-    this.physics.add.collider(this.bulletGroup, this.rockGroup, this.destroyRock, null, this);
 
     let frameNames = this.anims.generateFrameNumbers('exp');
 
@@ -95,9 +95,20 @@ class SceneMain extends Phaser.Scene {
     });
 
     this.eship = this.physics.add.sprite(this.centerX, 0, "eship");
+    this.eship.body.collideWorldBounds = true;
     Align.scaleToGameW(this.eship, 0.25);
 
     this.makeInfo();
+    this.setColliders();
+  }
+
+  setColliders()
+  {
+    this.physics.add.collider(this.rockGroup);
+    this.physics.add.collider(this.bulletGroup, this.rockGroup, this.destroyRock, null, this);
+    this.physics.add.collider(this.ebulletGroup, this.rockGroup, this.destroyRock, null, this);
+    this.physics.add.collider(this.bulletGroup, this.eship, this.damageEnemy, null, this);
+    this.physics.add.collider(this.ebulletGroup, this.ship, this.damagePlayer, null, this);
   }
 
   makeInfo()
@@ -133,6 +144,20 @@ class SceneMain extends Phaser.Scene {
     this.icon2.setScrollFactor(0);
   }
 
+  damagePlayer(ship, bullet)
+  {
+    let explosion = this.add.sprite(this.ship.x, this.ship.y, 'exp');
+    explosion.play('boom');
+    bullet.destroy();
+  }
+
+  damageEnemy(ship, bullet)
+  {
+    let explosion = this.add.sprite(bullet.x, bullet.y, 'exp');
+    explosion.play('boom');
+    bullet.destroy();
+  }
+
   destroyRock(bullet, rock)
   {
     bullet.destroy();
@@ -164,13 +189,20 @@ class SceneMain extends Phaser.Scene {
       let angle = this.physics.moveTo(this.ship, tx, ty, 100);
       angle = this.toDegrees(angle);
       this.ship.angle = angle;
+      //
+      //
+      //
+      let distX2 = Math.abs(this.ship.x - tx);
+      let distY2 = Math.abs(this.ship.y - ty);
+      if (distX2 > 30 && distY2 > 30){
+        let angle2 = this.physics.moveTo(this.eship, this.ship.x, this.ship.y, 60);
+        angle2 = this.toDegrees(angle2);
+        this.eship.angle = angle2;
+      }
     } else {
-      this.makeBullet();
+        this.makeBullet();
     }
 
-    let angle2 = this.physics.moveTo(this.eship, this.ship.x, this.ship.y, 60);
-    angle2 = this.toDegrees(angle2);
-    this.eship.angle = angle2;
   }
 
   makeBullet() {
@@ -191,6 +223,7 @@ class SceneMain extends Phaser.Scene {
     this.lastEBullet = this.getTimer();
 
     let ebullet = this.physics.add.sprite(this.eship.x, this.eship.y, "ebullet");
+    this.ebulletGroup.add(ebullet);
     ebullet.body.angularVelocity = 10;
     this.physics.moveTo(ebullet, this.ship.x, this.ship.y, 100);
   }
