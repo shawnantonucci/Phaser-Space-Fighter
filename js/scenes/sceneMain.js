@@ -14,8 +14,8 @@ class SceneMain extends Phaser.Scene {
     let mediaManager = new MediaManager({ scene: this });
     mediaManager.setBackgroundMusic("backgroundMusic");
 
-    this.shields = 50;
-    this.eshields = 50;
+    this.shields = 100;
+    this.eshields = 100;
 
     model.playerWon = true;
 
@@ -121,8 +121,8 @@ class SceneMain extends Phaser.Scene {
 
   makeInfo()
   {
-    this.text1 = this.add.text(0,0,"Shields\n50", {fontSize:game.config.width/30, align: "center", backgroundColor: '#000000'});
-    this.text2 = this.add.text(0,0,"Enemy Shields\n50", {fontSize:game.config.width/30, align: "center", backgroundColor: '#000000'});
+    this.text1 = this.add.text(0,0,"Shields\n100", {fontSize:game.config.width/30, align: "center", backgroundColor: '#000000'});
+    this.text2 = this.add.text(0,0,"Enemy Shields\n100", {fontSize:game.config.width/30, align: "center", backgroundColor: '#000000'});
 
     this.text1.setOrigin(0.5,0.5);
     this.text2.setOrigin(0.5,0.5);
