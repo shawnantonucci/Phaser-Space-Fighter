@@ -306,17 +306,23 @@ class SceneMain extends Phaser.Scene {
 
   update() {
     //constant running loop
-    let distX = Math.abs(this.ship.x - this.tx);
-    let distY = Math.abs(this.ship.y - this.ty);
-    if (distX < 10 && distY < 10) {
-      this.ship.body.setVelocity(0, 0);
-    }
+    if(this.ship && this.eship)
+    {
+      let distX = Math.abs(this.ship.x - this.tx);
+      let distY = Math.abs(this.ship.y - this.ty);
+      if (distX < 10 && distY < 10) {
+        if(this.ship.body)
+        {
+          this.ship.body.setVelocity(0, 0);
+        }
+      }
 
-    let distX2 = Math.abs(this.ship.x - this.eship.x);
-    let distY2 = Math.abs(this.ship.y - this.eship.y);
-    if (distX2 < game.config.width / 5 && distY2 < game.config.height / 5) {
-      this.eship.alpha = .5;
-      this.fireEBullet();
+      let distX2 = Math.abs(this.ship.x - this.eship.x);
+      let distY2 = Math.abs(this.ship.y - this.eship.y);
+      if (distX2 < game.config.width / 5 && distY2 < game.config.height / 5) {
+        this.eship.alpha = .5;
+        this.fireEBullet();
+      }
     }
   }
 }
