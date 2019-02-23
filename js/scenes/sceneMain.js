@@ -15,8 +15,9 @@ class SceneMain extends Phaser.Scene {
 
     let sb = new SoundButtons({ scene: this });
 
-    this.shields = 100;
-    this.eshields = 100;
+    this.shields = 5;
+    this.eshields = 5;
+    model.playerWon = true;
 
     this.centerX = game.config.width / 2;
     this.centerY = game.config.height / 2;
@@ -50,37 +51,9 @@ class SceneMain extends Phaser.Scene {
 
     this.bulletGroup = this.physics.add.group();
     this.ebulletGroup = this.physics.add.group();
+    this.rockGroup = this.physics.add.group();
+    this.makeRocks();
 
-    this.rockGroup = this.physics.add.group({
-      key: "rocks",
-      frame: [0, 1, 2],
-      frameQuantity: 4,
-      bounceX: 1,
-      bounceY: 1,
-      angularVelocity: 1,
-      collideWorldBounds: true
-    });
-
-    this.rockGroup.children.iterate(
-      function(child) {
-        let xx = Math.floor(Math.random() * this.background.displayWidth);
-        let yy = Math.floor(Math.random() * this.background.displayHeight);
-        child.x = xx;
-        child.y = yy;
-
-        Align.scaleToGameW(child, 0.1);
-
-        let vx = Math.floor(Math.random() * 2) - 1;
-        let vy = Math.floor(Math.random() * 2) - 1;
-        if (vx == 0 && vy == 0) {
-          vx = 1;
-          vy = 1;
-        }
-
-        let speed = Math.floor(Math.random() * 200) + 10;
-        child.body.setVelocity(vx * speed, vy * speed);
-      }.bind(this)
-    );
 
 
     let frameNames = this.anims.generateFrameNumbers('exp');
@@ -103,6 +76,45 @@ class SceneMain extends Phaser.Scene {
 
     this.makeInfo();
     this.setColliders();
+  }
+
+  makeRocks()
+  {
+    if (this.rockGroup.getChildren().length == 0)
+    {
+
+      this.rockGroup = this.physics.add.group({
+        key: "rocks",
+        frame: [0, 1, 2],
+        frameQuantity: 4,
+        bounceX: 1,
+        bounceY: 1,
+        angularVelocity: 1,
+        collideWorldBounds: true
+      });
+  
+      this.rockGroup.children.iterate(
+        function(child) {
+          let xx = Math.floor(Math.random() * this.background.displayWidth);
+          let yy = Math.floor(Math.random() * this.background.displayHeight);
+          child.x = xx;
+          child.y = yy;
+  
+          Align.scaleToGameW(child, 0.1);
+  
+          let vx = Math.floor(Math.random() * 2) - 1;
+          let vy = Math.floor(Math.random() * 2) - 1;
+          if (vx == 0 && vy == 0) {
+            vx = 1;
+            vy = 1;
+          }
+  
+          let speed = Math.floor(Math.random() * 200) + 10;
+          child.body.setVelocity(vx * speed, vy * speed);
+        }.bind(this)
+        );
+        this.setColliders();
+    }
   }
 
   setColliders()
@@ -153,12 +165,22 @@ class SceneMain extends Phaser.Scene {
   {
     this.shields--;
     this.text1.setText("Shields\n" + this.shields);
+    if(this.shields == 0)
+    {
+      model.playerWon = false;
+      this.scene.start("SceneOver");
+    }
   }
 
   downEnemy()
   {
     this.eshields--;
     this.text2.setText("Enemy Shields\n" + this.eshields);
+    if(this.eshields == 0)
+    {
+      model.playerWon = true;
+      this.scene.start("SceneOver");
+    }
   }
 
   rockHitPlayer(ship, rock)
@@ -166,6 +188,7 @@ class SceneMain extends Phaser.Scene {
     let explosion = this.add.sprite(rock.x, rock.y, 'exp');
     explosion.play('boom');
     rock.destroy();
+    this.makeRocks();
     this.downPlayer();
   }
 
@@ -174,6 +197,7 @@ class SceneMain extends Phaser.Scene {
     let explosion = this.add.sprite(rock.x, rock.y, 'exp');
     explosion.play('boom');
     rock.destroy();
+    this.makeRocks();
     this.downEnemy();
   }
 
@@ -204,6 +228,7 @@ class SceneMain extends Phaser.Scene {
     let explosion = this.add.sprite(rock.x, rock.y, 'exp');
     explosion.play('boom');
     rock.destroy();
+    this.makeRocks();
   }
 
   getTimer() {
